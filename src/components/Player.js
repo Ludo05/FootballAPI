@@ -10,15 +10,18 @@ class Player extends React.Component{
         this.renderList = this.renderList.bind(this)
     }
 
+    componentWillMount() {
+        this.props.getTeam();
+    }
+
 
     renderList(){
-        console.log("In RenderList")
-    const list = this.props.reducer
-    if(list.length){
+    const list = this.props.reducer;
+    if(list && list.length){
         console.log("List has length")
-        list.map(player => {
+        return list.map((player, index) => {
         return (
-            <div >
+            <div key={index} >
                 <p>{player}</p>
             </div>
         )
@@ -41,8 +44,10 @@ class Player extends React.Component{
 
     const MapStateToProps = (state) => {
     //What ever returned from here will show up as props for playerList
-    return {reducer: state.reducer}
+
+      // hey the reducer is wrong -- this shouldn't be an array, please fix it
+    return {reducer: state[0]}
     }
 
-export default connect(MapStateToProps)(Player )
+export default connect(MapStateToProps, { getTeam })(Player )
 
